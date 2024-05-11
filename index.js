@@ -18,6 +18,7 @@ console.log("v0.0.1 - by Miqueias Belfort");
 const { stdin: input, stdout: output } = require('node:process');
 const rl = readline.createInterface({ input, output, prompt: 'oxeSQL: '});
 rl.prompt();
+
 function main(){
 
     const database = new Database();

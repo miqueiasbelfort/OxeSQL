@@ -37,7 +37,7 @@ class Commander {
                 readline.clearScreenDown(process.stdout);
                 break;
             case "mostrar":
-                show(this.command, db);
+                show(this.command);
                 break;
             default:
                 console.log("USE COMMAND --AJUDA");

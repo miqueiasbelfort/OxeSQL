@@ -1,6 +1,7 @@
 const readline = require('node:readline');
 const creater = require("./comands/create");
 const show = require("./comands/show");
+const insert = require("./comands/insert");
 
 class Commander {
     constructor(input){
@@ -24,7 +25,7 @@ class Commander {
                 creater(this.command, db);
                 break;
             case "inserir":
-                console.log("INSERT SOMETHING");
+                insert(this.command, db);
                 break;
             case "deletar":
                 console.log("DELETE SOMETHING");

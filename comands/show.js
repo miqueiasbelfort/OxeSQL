@@ -72,7 +72,6 @@ const formatedLine = (line) => {
     }
     return tableKeys;
 };
-//console.log(formatedLine('id:inteiro-chave,nome:texto-nao_vazio,eEstudante:logico'));
 
 const showAllTablesInDatabase = (db) => {
     const databaseRepositorie = path.join(__dirname, "..", 'databases', db);
@@ -83,7 +82,7 @@ const showAllTablesInDatabase = (db) => {
             return;
         }
         // Filtrando apenas os arquivos
-        const tableFiles = files.filter(file => file.isFile()).map(dir => dir.name);
+        const tableFiles = files.filter(file => file.isFile()).map(dir => dir.name)
 
         for(let i = 0; i < tableFiles.length; i++){
             const tablePath = path.join(__dirname, "..", 'databases', db, tableFiles[i]);
@@ -99,14 +98,10 @@ const showAllTablesInDatabase = (db) => {
              
                 const tableKeys = formatedLine(firstLine);
                 const obj = {tabela: tableFiles[i].split(".")[0], chaves: tableKeys}
-                const res = [];
-                res.push(obj);
-
-                console.log(res);
+                console.log("");
+                console.log(obj);
             });
         }
- 
-
      });
 };
 

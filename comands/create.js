@@ -44,12 +44,13 @@ const checkTypeArgs = (args) => {
 
     const allKeys = ["inteiro", "chave", "texto", "logico", "flutuante", "nao_vazio"];
     let commanderKeys = [];
-
+    
     for(let i = 0; i < argsArray.length; i++){
         const keys = argsArray[i].split(":")[1];
         const key = keys.split("-");
         commanderKeys.push(...key);
     }
+    // Verifica se a chave passada no argumento é diferente das que podem ser passadas
     for(let i = 0; i < commanderKeys.length; i++){
         const comandKey = commanderKeys[i];
         if(!allKeys.includes(comandKey)){

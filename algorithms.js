@@ -12,6 +12,6 @@ const arraysIquals = (arr1, arr2) => {
     return true;
 }
 
-// console.log(arraysIquals(["nome","email"], ["email", "nome"]));
+// console.log(arraysIquals(["nome","email"], ["email", "nome"])); -> TRUE
 
 module.exports = {arraysIquals};

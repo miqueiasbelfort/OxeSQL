@@ -81,20 +81,38 @@ const checkKeysTable = (keys, tablePath) => {
 
 // ESCREVER DADOS
 const insertData = (values, tablePath) => {
-    if(!fs.existsSync(tablePath)){
-        console.log(`Não existe tabela com o nome "${tableName}" no banco de dados "${database}".\n`.yellow);
-        return;
-    }
+    
+    let data = values.replace(/[()]/g, '');
 
     const tableContent = fs.readFileSync(tablePath, 'utf8');
+
+    const lines = tableContent.split('\n');
+    const firstLine = lines[0];
+
+    const listOfKyes = formatedKeysTable(firstLine);
+
+    let chave; // TODO: Modificar para que possa passar quantas chaves quiser
+    for(let i = 0; i < listOfKyes.length; i++){
+        if(listOfKyes[i].isChave){
+            chave = listOfKyes[i].key;
+        }
+    }
+    const dataCount = lines.length;
+
     const allLines = tableContent.split("\n");
     const lastLine = allLines[allLines.length - 1];
     
     if(lastLine.trim() !== ""){ // Verificando se a ultima linha esta vazia
         fs.appendFileSync(tablePath, "\n"); // Adicionando uma linha não estiver vazia
     }
+    const firstKey = Number(values.split(",")[0].replace(/[()]/g, ''));
+    console.log(firstKey);
 
-    const data = values.replace(/[()]/g, '');
+    if(chave && firstKey !== Number){ // TODO: Verificar se não esta passando ID
+        // TODO: Remover o número do começo quando for adicionar
+        data = dataCount + "," + data; // TODO: Adicionar o número no lugar certo.
+    }
+        
     fs.appendFileSync(tablePath, data);
     console.log(`Adados adicionados a tabela`);
 }

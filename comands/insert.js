@@ -80,6 +80,23 @@ const checkKeysTable = (keys, tablePath) => {
 };
 
 // ESCREVER DADOS
+// Vai pegar as posições e a contagem para saber onde adicionar as chaves
+const getKeysPossitions = (line, lines, data) => {
+    const listOfKyes = formatedKeysTable(line);
+    const dataArray = data.split(',')
+
+    const keysPossitions = [];
+    for(let i = 0; i < listOfKyes.length; i++){ // Pegar a posição das chaves
+        if(listOfKyes[i].isChave){
+            keysPossitions.push(i);
+            dataArray.splice(i, 0, "0");
+        }
+    }
+    const dataCount = lines.length;
+    console.log(dataArray); // [0]
+
+    return {dataCount, keysPossitions, dataArray};
+};
 const insertData = (values, tablePath) => {
     
     let data = values.replace(/[()]/g, '');
@@ -89,15 +106,7 @@ const insertData = (values, tablePath) => {
     const lines = tableContent.split('\n');
     const firstLine = lines[0];
 
-    const listOfKyes = formatedKeysTable(firstLine);
-
-    let chave; // TODO: Modificar para que possa passar quantas chaves quiser
-    for(let i = 0; i < listOfKyes.length; i++){
-        if(listOfKyes[i].isChave){
-            chave = listOfKyes[i].key;
-        }
-    }
-    const dataCount = lines.length;
+    const {dataCount, keysPossitions, dataArray} = getKeysPossitions(firstLine, lines, data);
 
     const allLines = tableContent.split("\n");
     const lastLine = allLines[allLines.length - 1];
@@ -105,14 +114,15 @@ const insertData = (values, tablePath) => {
     if(lastLine.trim() !== ""){ // Verificando se a ultima linha esta vazia
         fs.appendFileSync(tablePath, "\n"); // Adicionando uma linha não estiver vazia
     }
-    const firstKey = Number(values.split(",")[0].replace(/[()]/g, ''));
-    console.log(firstKey);
 
-    if(chave && firstKey !== Number){ // TODO: Verificar se não esta passando ID
-        // TODO: Remover o número do começo quando for adicionar
-        data = dataCount + "," + data; // TODO: Adicionar o número no lugar certo.
-    }
-        
+    // Trocar as posições dos valores passados pela contagem de linhas
+    keysPossitions.forEach((possition) => {
+        if(possition < dataArray.length){
+            dataArray[possition] = dataCount;
+        }
+    });
+       
+    data = dataArray.join(",");
     fs.appendFileSync(tablePath, data);
     console.log(`Adados adicionados a tabela`);
 }

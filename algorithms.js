@@ -12,6 +12,25 @@ const arraysIquals = (arr1, arr2) => {
     return true;
 }
 
+const recombineArray = (array) => {
+    let res = [];
+    let buffer = "";
+    array.forEach((item, index) => {
+        if(item.includes("(")){
+            buffer = item;
+        } else if (item.includes(")")){
+            buffer += " " + item;
+            res.push(buffer);
+            buffer = "";
+        } else if (buffer){
+            buffer += " " + item;
+        } else {
+            res.push(item);
+        }
+    });
+    return res;
+}
+
 // console.log(arraysIquals(["nome","email"], ["email", "nome"])); -> TRUE
 
-module.exports = {arraysIquals};
+module.exports = {arraysIquals, recombineArray};

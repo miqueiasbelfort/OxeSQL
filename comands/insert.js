@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const colors = require("colors");
-const {arraysIquals} = require("../algorithms");
+const {arraysIquals, recombineArray} = require("../algorithms");
 
 colors.enable();
 
@@ -12,10 +12,10 @@ const insert = (com, database) => {
     const tableName = com[2];
     const keys = com[3];
     const declareValues = com[4];
-    const values = com[5];
+    const values = recombineArray(com)[3];
 
     if(declareValues.toLowerCase() != "valores" ?? !declareValues){
-        console.log(`INSERIR EM <nome_da_tabela> (todas_as_chaves) VALORES (valores_completos)`.yellow)
+        console.log(`[ALERTA]: INSERIR EM <nome_da_tabela> (todas_as_chaves) VALORES (valores_completos)`.yellow)
         return;
     };
 
@@ -24,10 +24,10 @@ const insert = (com, database) => {
             insertIntoTable(tableName, keys, values, database);
             break;
         case "--ajuda":
-            console.log("\nCRIAR BANCO [nome] - Criar um novo banco de dados;\nCRIAR TABELA [nome] (<chave>:tipo-tipo) - Criar uma tabela no banco;\n".gray);
+            console.log("\nCRIAR BANCO [nome] - Criar um novo banco de dados;\nCRIAR TABELA [nome] (<chave>:tipo-tipo) - Criar uma tabela no banco;".gray);
             break;
         default:
-            console.log("Argumento não valido! Use o comando CRIAR --AJUDA.\n")
+            console.log("[ALERTA]: Argumento não valido! Use o comando CRIAR --AJUDA.".yellow)
     };
 };
 
@@ -62,7 +62,7 @@ const getAllKeysNotChave = (keys) => {
 const checkKeysTable = (keys, tablePath) => {
     fs.readFile(tablePath, 'utf8', (err, data) => {
         if (err) {
-            console.error('Erro ao ler o arquivo:'.red, err);
+            console.error('[ERRO]: erro ao ler o arquivo:'.red, err);
             return;
         }
         // Separando as linhas do arquivo
@@ -73,7 +73,7 @@ const checkKeysTable = (keys, tablePath) => {
         const tableKeys = getAllKeysNotChave(formatedKeysTable(firstLine));
         
         if(!arraysIquals(keysToInsert, tableKeys)){
-            console.log(`As chaves (${keysToInsert}) são diferente de (${tableKeys}) da tabela.\n`.yellow);
+            console.log(`[ALERTA]: Não passe nos valores tipo "chave", ex: (${tableKeys}).`.yellow);
             return;
         }    
     });
@@ -89,17 +89,17 @@ const getKeysPossitions = (line, lines, data) => {
     for(let i = 0; i < listOfKyes.length; i++){ // Pegar a posição das chaves
         if(listOfKyes[i].isChave){
             keysPossitions.push(i);
-            dataArray.splice(i, 0, "0");
+            dataArray.splice(i, 0, "0"); // Adicionar 0 nas posições das chaves
         }
     }
     const dataCount = lines.length;
-    console.log(dataArray); // [0]
 
     return {dataCount, keysPossitions, dataArray};
 };
-const insertData = (values, tablePath) => {
+const insertData = (values, tablePath, tableName) => {
     
     let data = values.replace(/[()]/g, '');
+    let isChaveInValues = false;
 
     const tableContent = fs.readFileSync(tablePath, 'utf8');
 
@@ -113,29 +113,39 @@ const insertData = (values, tablePath) => {
     
     if(lastLine.trim() !== ""){ // Verificando se a ultima linha esta vazia
         fs.appendFileSync(tablePath, "\n"); // Adicionando uma linha não estiver vazia
-    }
+    };
 
     // Trocar as posições dos valores passados pela contagem de linhas
     keysPossitions.forEach((possition) => {
         if(possition < dataArray.length){
             dataArray[possition] = dataCount;
         }
+        if(Number(data[possition])){
+            // console.log("data[possition]: ", Number(data[possition]))
+            isChaveInValues = true;
+            return;
+        }
     });
+
+    if(isChaveInValues){
+        console.log(`[NÂO ACEITO]: Não passe os valores chaves, ex: (id,nome) = (nome)`.yellow);
+        return;
+    }
        
     data = dataArray.join(",");
     fs.appendFileSync(tablePath, data);
-    console.log(`Adados adicionados a tabela`);
-}
-
+    console.log(`[SUCESSO]: Dados adicionados a tabela ${tableName}`.green);
+};
 const insertIntoTable = (tableName, keys, values, database) => {
     const tablePath = path.join(__dirname, "..", "databases", database, `${tableName}.csv`);
     // Verificando se o arquivo existe
     if(!fs.existsSync(tablePath)){
-        console.log(`Não existe tabela com o nome "${tableName}" no banco de dados "${database}".\n`.yellow);
+        console.log(`[NÂO ACEITO]: Não existe tabela com o nome "${tableName}" no banco de dados "${database}".`.yellow);
         return;
     }
     checkKeysTable(keys, tablePath);
-    insertData(values, tablePath);
+
+    insertData(values, tablePath, tableName);
 };
 
 module.exports = insert;

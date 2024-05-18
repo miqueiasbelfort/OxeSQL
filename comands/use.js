@@ -8,18 +8,18 @@ class Database {
     setDatabase(name){
         
         if(!name){
-            console.log("\nBanco de dados não passado!\n");
+            console.log("[NÂO ACEITO]: Banco de dados não passado!".yellow);
             return;
         }
         
         const databasePath = path.join(__dirname, "..", 'databases', name);
         if (!fs.existsSync(databasePath)) {
-            console.log(`\nO banco dados ${name} não existe!\n`.yellow);
+            console.log(`[NÂO ACEITO]: O banco dados ${name} não existe!`.yellow);
             return;
         }
 
         this.database = name;
-        console.log(`\nUsando banco: ${name}\n`.green);
+        console.log(`[SUCESSO]: Usando banco: ${name}`.green);
     }
     getDatabase(){
         return this.database;

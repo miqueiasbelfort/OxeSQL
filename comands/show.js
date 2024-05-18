@@ -18,10 +18,10 @@ const show = (com) => {
             showAllTablesInDatabase(database);
             break;
         case "--ajuda":
-            console.log("\nMOSTRAR BANCOS - Mostra informações dos seus bancos;\nMOSTRAR TABELA [banco] - Informações das tabelas do banco [banco];\n".gray);
+            console.log("MOSTRAR BANCOS - Mostra informações dos seus bancos;\nMOSTRAR TABELA [banco] - Informações das tabelas do banco [banco];".gray);
             break;
         default:
-            console.log("Argumento não valido! Use o comando SHOW --AJUDA.\n")
+            console.log("Argumento não valido! Use o comando SHOW --AJUDA.")
     }
 };
 
@@ -31,7 +31,7 @@ const showAllDatabases = () => {
     fs.readdir(databaseRepositories, { withFileTypes: true }, (err, files) => {
 
         if (err) {
-            console.error('Erro ao tentar acessar o diretório:'.red, err);
+            console.error('[ERRO]: Erro ao tentar acessar o diretório:'.red, err);
             return;
         }
 
@@ -45,7 +45,7 @@ const showAllDatabases = () => {
             
             fs.stat(diretorioPath, (err, stats) => {
                 if (err) {
-                    console.error(`Erro ao acessar informações do ${diretorio}\n`.red, err);
+                    console.error(`[ERRO]: Erro ao acessar informações do ${diretorio}`.red, err);
                     return;
                 }
                 const dbInformation = {banco: diretorio, tamanho: `${stats.size} bytes`, criado_em: stats.birthtime};
@@ -78,7 +78,7 @@ const showAllTablesInDatabase = (db) => {
      
     fs.readdir(databaseRepositorie, { withFileTypes: true }, (err, files) => {
         if (err) {
-            console.error('Erro ao tentar acessar o diretório:'.red, err);
+            console.error('[ERRO]: Erro ao tentar acessar o diretório:'.red, err);
             return;
         }
         // Filtrando apenas os arquivos
@@ -88,7 +88,7 @@ const showAllTablesInDatabase = (db) => {
             const tablePath = path.join(__dirname, "..", 'databases', db, tableFiles[i]);
             fs.readFile(tablePath, 'utf8', (err, data) => {
                 if (err) {
-                    console.error('Erro ao ler o arquivo:'.red, err);
+                    console.error('[ERRO]: Erro ao ler o arquivo:'.red, err);
                     return;
                 }
 

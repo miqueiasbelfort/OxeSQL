@@ -22,7 +22,7 @@ const create = (com, database) => {
             console.log("\nCRIAR BANCO [nome] - Criar um novo banco de dados;\nCRIAR TABELA [nome] (<chave>:tipo-tipo) - Criar uma tabela no banco;\n".gray);
             break;
         default:
-            console.log("Argumento não valido! Use o comando CRIAR --AJUDA.\n")
+            console.log("[ALERTA]: Argumento não valido! Use o comando CRIAR --AJUDA.")
     }
 };
 
@@ -32,9 +32,9 @@ const createDatabase = (name) => {
     // Verificando se o banco de dados já existe
     if (!fs.existsSync(repositoriPath)) {
         fs.mkdirSync(repositoriPath, { recursive: true });
-        console.log(`Novo banco de dados criado: ${name}\n`.green);
+        console.log(`[SUCESSO]: Novo banco de dados criado: ${name}`.green);
     } else {
-        console.log(`O banco dados ${name} já existe\n`.yellow);
+        console.log(`[NÃO ACEITO]: O banco dados ${name} já existe`.yellow);
     }
     
 };
@@ -54,7 +54,7 @@ const checkTypeArgs = (args) => {
     for(let i = 0; i < commanderKeys.length; i++){
         const comandKey = commanderKeys[i];
         if(!allKeys.includes(comandKey)){
-            console.log(`Chave ${comandKey} invalida!`.red);
+            console.log(`[NÂO ACEITO]: Chave ${comandKey} invalida!`.yellow);
             return true;
         }
     }
@@ -65,7 +65,7 @@ const createTable = (name, args, database) => {
 
     // Verificar se selecionou um banco de dados
     if (!database) {
-        console.log("Selecione um banco de dados.\n".yellow);
+        console.log("[NÂO ACEITO]: Selecione um banco de dados.".yellow);
         return;
     }
 
@@ -78,13 +78,13 @@ const createTable = (name, args, database) => {
 
     // Verificando de esse banco de dados existe
     if (!fs.existsSync(databasePath)) {
-        console.log(`O banco dados ${name} não existe!\n`.yellow);
+        console.log(`[NÃO ACEITO]: O banco dados ${name} não existe!`.yellow);
         return;
     }
 
     // Verificando se o arquivo existe
     if(fs.existsSync(tablePath)){
-        console.log(`Já existe uma tabela com o nome ${name}.`.yellow);
+        console.log(`[NÂO ACEITO]: Já existe uma tabela com o nome ${name}.`.yellow);
         return;
     }
 
@@ -96,10 +96,10 @@ const createTable = (name, args, database) => {
     // Criando a tabele (arquivo.csv)
     fs.writeFile(tablePath, formatedArgs, (err) => {
         if (err) {
-            console.error('Erro ao criar tabela:\n'.red, err);
+            console.error('[ERRO]: Erro ao criar tabela:'.red, err);
             return;
         }
-        console.log(`Tabela criado com sucesso! no banco de dados ${database}.\n`.green);
+        console.log(`[SUCESSO]: Tabela criado com sucesso! no banco de dados ${database}.`.green);
     });
 
 };

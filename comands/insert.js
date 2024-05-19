@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 const colors = require("colors");
 const {arraysIquals, recombineArray} = require("../algorithms");
-
 colors.enable();
 
 // function main

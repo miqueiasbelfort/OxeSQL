@@ -1,11 +1,16 @@
 const readline = require('node:readline');
+const colors = require("colors");
+colors.enable();
+
+
 const creater = require("./comands/create");
 const show = require("./comands/show");
 const insert = require("./comands/insert");
+const deleteCommand = require("./comands/delete");
 
 class Commander {
     constructor(input){
-        this.command = input.split(" ");
+        this.command = input.split(/\s+/);
     }
 
     // Close database
@@ -28,7 +33,7 @@ class Commander {
                 insert(this.command, db);
                 break;
             case "deletar":
-                console.log("DELETE SOMETHING");
+                deleteCommand(this.command, db);
                 break;
             case "selecionar":
                 console.log("SELECT SOMETHING");
@@ -41,7 +46,7 @@ class Commander {
                 show(this.command);
                 break;
             default:
-                console.log("USE COMMAND --AJUDA");
+                console.log("[ALERTA]: USE COMMAND --AJUDA".yellow);
         }
     }
 

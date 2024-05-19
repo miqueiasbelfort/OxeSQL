@@ -65,7 +65,7 @@ const createTable = (name, args, database) => {
 
     // Verificar se selecionou um banco de dados
     if (!database) {
-        console.log("[NÂO ACEITO]: Selecione um banco de dados.".yellow);
+        console.log("[NÂO ACEITO]: Selecione um banco de dados primeiro.".yellow);
         return;
     }
 

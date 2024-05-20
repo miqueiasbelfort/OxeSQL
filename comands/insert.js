@@ -11,7 +11,9 @@ const insert = (com, database) => {
     const tableName = com[2];
     const keys = com[3];
     const declareValues = com[4];
-    const values = recombineArray(com)[3];
+    const lastCommand = com.slice(4);
+    const indexOfValues = lastCommand.indexOf("valores");
+    const values = lastCommand.slice(indexOfValues + 1).join("");
 
     if(declareValues.toLowerCase() != "valores" ?? !declareValues){
         console.log(`[ALERTA]: INSERIR EM <nome_da_tabela> (todas_as_chaves) VALORES (valores_completos)`.yellow)
@@ -120,7 +122,6 @@ const insertData = (values, tablePath, tableName) => {
             dataArray[possition] = dataCount;
         }
         if(Number(data[possition])){
-            // console.log("data[possition]: ", Number(data[possition]))
             isChaveInValues = true;
             return;
         }

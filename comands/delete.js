@@ -133,7 +133,7 @@ const replaceValueInTable = (tablePath, searchValue, callback) => {
             callback(null, "[SUCESSO]: Dados apagados da tabela.".green);
         })
     });
-}
+};
 const deleteDataFromTable = (tableName, search, db) => {
     const tablePath = path.join(__dirname, "..", "databases", db, `${tableName}.csv`);
     

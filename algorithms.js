@@ -46,6 +46,18 @@ const conbineArray = (arr1, arr2) => {
     return res;
 };
 
+const getAllKeys = (head) => {
+    const arrayHead = head.split(",");
+    const keys = [];
+    for(let i = 0; i < arrayHead.length; i++){
+        const headString = arrayHead[i].split(":");
+        keys.push(headString[0]);
+    }
+    return keys;
+    /* TODO: Preciso fazer com que todos os dados,
+    fiquem relacionados com as chaves deles ex: [ { id: [<todos os seus valores>] } ] */
+};
+
 const binerySearch = (arr, search, key) => {
     let left = 0;
     let rigth = arr.length - 1;
@@ -64,6 +76,26 @@ const binerySearch = (arr, search, key) => {
     return - 1;
 };  
 
+const { Console } = require('console');
+const { Transform } = require('stream');
+
+function tableWithoutIndex(input) { // Função para remover (index) da tabela
+  const ts = new Transform({ transform(chunk, enc, cb) { cb(null, chunk) } })
+  const logger = new Console({ stdout: ts })
+  logger.table(input)
+  const table = (ts.read() || '').toString()
+  let result = '';
+  for (let row of table.split(/[\r\n]+/)) {
+    let r = row.replace(/[^┬]*┬/, '┌');
+    r = r.replace(/^├─*┼/, '├');
+    r = r.replace(/│[^│]*/, '');
+    r = r.replace(/^└─*┴/, '└');
+    r = r.replace(/'/g, ' ');
+    result += `${r}\n`;
+  }
+  return result;
+}
+
 /*const arr = [
     { id: '1', nome: 'Anna', idade: '10' },
     { id: '2', nome: 'Marcos', idade: '15' },
@@ -78,5 +110,7 @@ module.exports = {
     arraysIquals, 
     recombineArray, 
     conbineArray,
-    binerySearch
+    getAllKeys,
+    binerySearch,
+    tableWithoutIndex
 };

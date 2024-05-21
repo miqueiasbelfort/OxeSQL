@@ -7,6 +7,7 @@ const creater = require("./comands/create");
 const show = require("./comands/show");
 const insert = require("./comands/insert");
 const deleteCommand = require("./comands/delete");
+const select = require('./comands/select');
 
 class Commander {
     constructor(input){
@@ -36,7 +37,7 @@ class Commander {
                 deleteCommand(this.command, db);
                 break;
             case "selecionar":
-                console.log("SELECT SOMETHING");
+                select(this.command, db);
                 break;
             case "limpar":
                 readline.cursorTo(process.stdout, 0, 0);

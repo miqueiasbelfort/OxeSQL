@@ -46,11 +46,11 @@ const conbineArray = (arr1, arr2) => {
     return res;
 };
 
-const getAllKeys = (head) => {
+const getAllKeys = (head, isSet = false) => {
     const arrayHead = head.split(",");
     const keys = [];
     for(let i = 0; i < arrayHead.length; i++){
-        const headString = arrayHead[i].split(":");
+        const headString = isSet ? arrayHead[i].split("=") : arrayHead[i].split(":");
         keys.push(headString[0]);
     }
     return keys;

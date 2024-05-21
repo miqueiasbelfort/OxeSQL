@@ -2,12 +2,12 @@ const readline = require('node:readline');
 const colors = require("colors");
 colors.enable();
 
-
 const creater = require("./comands/create");
 const show = require("./comands/show");
 const insert = require("./comands/insert");
 const deleteCommand = require("./comands/delete");
 const select = require('./comands/select');
+const update = require('./comands/update');
 
 class Commander {
     constructor(input){
@@ -38,6 +38,9 @@ class Commander {
                 break;
             case "selecionar":
                 select(this.command, db);
+                break;
+            case "atualizar":
+                update(this.command, db);
                 break;
             case "limpar":
                 readline.cursorTo(process.stdout, 0, 0);

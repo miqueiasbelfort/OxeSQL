@@ -6,14 +6,16 @@ const {conbineArray, getAllKeys, binerySearch} = require("../algorithms");
 colors.enable();
 
 // function main
-const update = (com, database) => { // ATUALIZAR <tabela> POR (id:10,nome:Carlos) ONDE (id=1)
+const update = (com, database) => {
 
     const tableName = com[1];
-    const param = com[2];
+    const param = com[ tableName?.toLowerCase() == "--ajuda" ? 1 : 2 ];
     const data = com[3];
     const search = com[5];
 
-    if(!database){
+    console.log(param)
+
+    if(!database && param.toLowerCase() !== "--ajuda"){
         console.log("[NÃO ACEIRO]: Selecione um banco de dados primeiro.".yellow);
         return;
     }
@@ -23,7 +25,7 @@ const update = (com, database) => { // ATUALIZAR <tabela> POR (id:10,nome:Carlos
             updateTable(tableName,data,search,database);
             break;
         case "--ajuda":
-            console.log("\nCRIAR BANCO [nome] - Criar um novo banco de dados;\nCRIAR TABELA [nome] (<chave>:tipo-tipo) - Criar uma tabela no banco;\n".gray);
+            console.log(`ATUALIZAR <tablea> POR (nome=Username) ONDE (id=10)`.gray);
             break;
         default:
             console.log("[ALERTA]: Argumento não valido! Use o comando SELECIONAR --AJUDA.")
@@ -46,7 +48,7 @@ const replaceValueInTable = (tablePath, searchValue, updatedDate, callback) => {
         
         if(err) callback(err);
 
-        const modifiedData = data.replace(new RegExp(searchValue, 'g'), updatedDate);
+        const modifiedData = data.replace(new RegExp(searchValue, 'g'), `${updatedDate}`);
 
         fs.writeFile(tablePath, modifiedData, 'utf8', err => {
             if (err) callback(err);

@@ -6,12 +6,13 @@ const {conbineArray, getAllKeys, tableWithoutIndex} = require("../algorithms");
 colors.enable();
 
 // function main
-const select = (com, database) => { // SELECIONAR () DE <tabela>;
+const select = (com, database) => {
 
-    const param = com[2].toLowerCase();
+    const checkHelp = com[1]?.toLowerCase() == "--ajuda" ? 1 : 2;
+    const param = com[checkHelp].toLowerCase();
     const name = com[3];
 
-    if(!database){
+    if(!database && param !== "--ajuda"){
         console.log("[NÃO ACEIRO]: Selecione um banco de dados primeiro.".yellow);
         return;
     }
@@ -21,7 +22,7 @@ const select = (com, database) => { // SELECIONAR () DE <tabela>;
             selectFrom(com, database, name);
             break;
         case "--ajuda":
-            console.log("\nCRIAR BANCO [nome] - Criar um novo banco de dados;\nCRIAR TABELA [nome] (<chave>:tipo-tipo) - Criar uma tabela no banco;\n".gray);
+            console.log("SELECIONAR (*) DE <tabela>".gray);
             break;
         default:
             console.log("[ALERTA]: Argumento não valido! Use o comando SELECIONAR --AJUDA.")

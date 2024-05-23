@@ -19,7 +19,7 @@ const create = (com, database) => {
             createTable(name, args, database);
             break;
         case "--ajuda":
-            console.log("\nCRIAR BANCO [nome] - Criar um novo banco de dados;\nCRIAR TABELA [nome] (<chave>:tipo-tipo) - Criar uma tabela no banco;\n".gray);
+            console.log("\nCRIAR BANCO <nome> - Criar um novo banco de dados;\nCRIAR TABELA <nome> (<chave>:tipo-tipo) - Criar uma tabela no banco;\n".gray);
             break;
         default:
             console.log("[ALERTA]: Argumento não valido! Use o comando CRIAR --AJUDA.")

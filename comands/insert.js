@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const colors = require("colors");
-const {arraysIquals, recombineArray} = require("../algorithms");
+const {arraysIquals} = require("../algorithms");
 colors.enable();
 
 // function main
@@ -10,12 +10,12 @@ const insert = (com, database) => {
     const param = com[1].toLowerCase();
     const tableName = com[2];
     const keys = com[3];
-    const declareValues = com[4];
+    const declareValues = com[4]?.toLowerCase();
     const lastCommand = com.slice(4);
     const indexOfValues = lastCommand.indexOf("valores");
     const values = lastCommand.slice(indexOfValues + 1).join("");
 
-    if(declareValues.toLowerCase() != "valores" ?? !declareValues){
+    if((declareValues != "valores" ?? !declareValues) && param !== "--ajuda"){
         console.log(`[ALERTA]: INSERIR EM <nome_da_tabela> (todas_as_chaves) VALORES (valores_completos)`.yellow)
         return;
     };
@@ -25,7 +25,7 @@ const insert = (com, database) => {
             insertIntoTable(tableName, keys, values, database);
             break;
         case "--ajuda":
-            console.log("\nCRIAR BANCO [nome] - Criar um novo banco de dados;\nCRIAR TABELA [nome] (<chave>:tipo-tipo) - Criar uma tabela no banco;".gray);
+            console.log(`INSERIR EM <tabela> (nome,email) VALORES (Anna,anna@json.com) - Adicionar um novo valor na tabela`.gray);
             break;
         default:
             console.log("[ALERTA]: Argumento não valido! Use o comando CRIAR --AJUDA.".yellow)
@@ -93,7 +93,8 @@ const getKeysPossitions = (line, lines, data) => {
             dataArray.splice(i, 0, "0"); // Adicionar 0 nas posições das chaves
         }
     }
-    const dataCount = lines.length;
+    const linesWithouSpaces = lines.filter(e => e.trim() !== "");
+    const dataCount = linesWithouSpaces.length;
 
     return {dataCount, keysPossitions, dataArray};
 };
@@ -112,7 +113,7 @@ const insertData = (values, tablePath, tableName) => {
     const allLines = tableContent.split("\n");
     const lastLine = allLines[allLines.length - 1];
     
-    if(lastLine.trim() !== ""){ // Verificando se a ultima linha esta vazia
+    if(lastLine.trim() !== "" ?? lastLine.trim() !== " "){ // Verificando se a ultima linha esta vazia
         fs.appendFileSync(tablePath, "\n"); // Adicionando uma linha não estiver vazia
     };
 

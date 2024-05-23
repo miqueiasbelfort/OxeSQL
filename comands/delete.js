@@ -126,7 +126,7 @@ const replaceValueInTable = (tablePath, searchValue, callback) => {
         
         if(err) callback(err);
 
-        const modifiedData = data.replace(new RegExp(searchValue, 'g'), "  ");
+        const modifiedData = data.replace(new RegExp(searchValue, 'g'), "");
 
         fs.writeFile(tablePath, modifiedData, 'utf8', err => {
             if (err) callback(err);
